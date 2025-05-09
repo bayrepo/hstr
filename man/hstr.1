@@ -1,35 +1,35 @@
 .TH HSTR 1
 .SH NAME
-\fBhstr\fR \-  easily view, navigate, sort and use your command history with shell history suggest box. 
+\fBhstr\fR \-  easily view, navigate, sort and use your command history with shell history suggest box.
 .SH SYNOPSIS
 .B hstr [option] [arg1] [arg2]...
 .SH DESCRIPTION
 .B hstr
 uses shell history to provide suggest box like functionality
 for commands used in the past. By default it parses .bash-history
-file that is filtered as you type a command substring. Commands 
+file that is filtered as you type a command substring. Commands
 are not just filtered, but also ordered by a ranking algorithm
-that considers number of occurrences, length and timestamp. 
+that considers number of occurrences, length and timestamp.
 Favorite and frequently used commands can be bookmarked. In addition
-\fBhstr\fR allows removal of commands from history - for instance with a typo 
+\fBhstr\fR allows removal of commands from history - for instance with a typo
 or with a sensitive content.
 .SH OPTIONS
-.TP 
+.TP
 \fB-h --help\fR
 Show help
-.TP 
+.TP
 \fB-n --non-interactive\fR
 Print filtered history on standard output and exit
-.TP 
+.TP
 \fB-k --kill-last-command\fR
 Delete the last command from history and exit
-.TP 
+.TP
 \fB-i --insert-in-terminal=[command]\fR
 Insert custom command to terminal prompt and exit
 .TP
 \fB-f --favorites\fR
 Show favorites view immediately
-.TP 
+.TP
 \fB-s --show-configuration\fR
 Show configuration to be added to the config file of the shell (~/.bashrc or ~/.zshrc)
 .TP
@@ -65,7 +65,7 @@ Add currently selected command to favorites.
 Toggle search pattern case.
 .TP
 \fBCtrl\-r\fR, \fBUP\fR arrow, \fBDOWN\fR arrow, \fBCtrl\-n\fR, \fBCtrl\-p\fR, \fBCtrl\-j\fR, \fBCtrl\-k\fR
-Navigate in the history list. 
+Navigate in the history list.
 .TP
 \fBTAB\fR, \fBRIGHT\fR arrow
 Choose currently selected item for completion and let user to edit it on the command prompt.
@@ -75,7 +75,7 @@ Choose currently selected item for completion and let user to edit it in editor 
 .TP
 \fBENTER\fR
 Choose currently selected item for completion and execute it.
-.TP 
+.TP
 \fBDEL\fR
 Remove currently selected item from the shell history.
 .TP
@@ -96,10 +96,10 @@ Exit with empty prompt.
 \fBHSTR_CONFIG\fR
 Configuration options:
 
-\fIhicolor\fR 
+\fIhicolor\fR
         Get more colors with this option (default is monochromatic).
 
-\fImonochromatic\fR 
+\fImonochromatic\fR
         Ensure black and white view.
 
 \fIprompt-bottom\fR
@@ -118,7 +118,7 @@ Configuration options:
         Do not ask for confirmation on a history entry delete (default is with confirmation).
 
 \fIregexp-matching\fR
-        Filter command history using regular expressions. 
+        Filter command history using regular expressions.
 
 \fIsubstring-matching\fR
         Filter command history using substring.
@@ -127,10 +127,10 @@ Configuration options:
         Filter command history using keywords - item matches if contains all keywords in pattern in any order (keywords match is default).
 
 \fIcase-sensitive\fR
-        Make history filtering case sensitive (it's case insensitive by default). 
+        Make history filtering case sensitive (it's case insensitive by default).
 
 \fIraw-history-view\fR
-        Show normal history as a default view (metric-based view is shown otherwise). 
+        Show normal history as a default view (metric-based view is shown otherwise).
 
 \fIfavorites-view\fR
         Show favorites as a default view (metric-based view is shown otherwise).
@@ -142,7 +142,7 @@ Configuration options:
         Skip comments (lines beginning with #) when loading ~/.hstr_favorites (all lines are loaded by default).
 
 \fIduplicates\fR
-        Show duplicates in rawhistory (duplicates are discarded by default). 
+        Show duplicates in rawhistory (duplicates are discarded by default).
 
 \fIverbose-kill\fR
         Print the last command command deleted from history (nothing is printed by default).
@@ -180,10 +180,10 @@ Example:
 
 .SH FILES
 .TP
-\fB~/.hstr_favorites\fR 
+\fB~/.hstr_favorites\fR
  Bookmarked favorite commands.
 .TP
-\fB~/.hstr_blacklist\fR 
+\fB~/.hstr_blacklist\fR
  Commands to be hidden.
 
 .SH BASH CONFIGURATION
