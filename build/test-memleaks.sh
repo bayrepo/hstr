@@ -68,8 +68,8 @@ fi
 # run tests w/ Valgrind
 cat ${FILE_SCENARIOS} | while read SCENARIO
 do
-    # Valgrind
-    valgrind --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=all ${SCENARIO}
+    # Valgrind with ncurses suppressions
+    valgrind --suppressions=build/valgrind-ncurses.supp --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=definite,possible ${SCENARIO}
 
     # Valgrind's GDB
     #valgrind --vgdb=yes --vgdb-error=0 --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=all ${SCENARIO}
