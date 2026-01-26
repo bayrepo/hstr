@@ -41,6 +41,15 @@ help: ## make targets help
 	| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 #
+# CODING
+#
+
+.PHONY: vibe
+vibe:
+	@ls -l ../.github/copilot*.md
+	@cd .. && copilot --allow-all-tools --banner
+
+#
 # CLEAN
 #
 
