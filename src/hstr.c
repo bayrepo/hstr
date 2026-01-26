@@ -419,7 +419,7 @@ void hstr_exit(int status)
 
 void signal_callback_handler_ctrl_c(int signum)
 {
-    if(signum==SIGINT) {
+    if(signum==SIGINT || signum==SIGQUIT) {
         history_mgmt_flush();
         hstr_curses_stop(false);
         hstr_exit(signum);
@@ -1336,6 +1336,7 @@ void hide_notification(void)
 void loop_to_select(void)
 {
     signal(SIGINT, signal_callback_handler_ctrl_c);
+    signal(SIGQUIT, signal_callback_handler_ctrl_c);
 
     bool isSubshellHint=FALSE;
     char* isSubshellHintText = getenv(HSTR_ENV_VAR_IS_SUBSHELL);

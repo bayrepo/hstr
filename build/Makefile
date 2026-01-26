@@ -83,3 +83,15 @@ run-dev: ## run HSTR for development
 .PHONY: test
 test: ## run HSTR unit tests
 	cd ../test && qmake hstr-unit-tests.pro && make clean all && ./hstr-unit-tests
+
+#
+# INSTALL
+#
+
+.PHONY: install-personal
+install-personal: build ## install HSTR for personal user
+	@echo "Installing HSTR $(HSTR_VERSION) for personal user..."
+	@rm -vf $(HOME)/bin/hstr
+	@cp -vf ../src/hstr $(HOME)/bin
+	@echo "HSTR $(HSTR_VERSION) installed to $(HOME)/bin"
+	hstr --version
