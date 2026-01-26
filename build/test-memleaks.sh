@@ -16,12 +16,13 @@
 
 # Run HSTR w/ 1 history entry to hunt memleaks w/ valgrind
 
-#export OPT_ALL_SCENARIOS=true
+export OPT_ALL_SCENARIOS=true
 
 # both valid and INVALID history file to be tested
 #export HISTFILE=
-export HISTFILE="/tmp/invalid-history-file-01"
+#export HISTFILE="/tmp/invalid-history-file-01"
 #export HISTFILE="~/.bash_history"
+export HISTFILE="~/.zsh_history"
 #export HISTFILE="~/.zhistory"
 #export HISTFILE="~/.zshrc"
 

@@ -84,6 +84,10 @@ run-dev: ## run HSTR for development
 test: ## run HSTR unit tests
 	cd ../test && qmake hstr-unit-tests.pro && make clean all && ./hstr-unit-tests
 
+.PHONY: test-memleaks
+test-memleaks: ## run HSTR memory leak tests with Valgrind
+	./test-memleaks.sh
+
 #
 # INSTALL
 #
