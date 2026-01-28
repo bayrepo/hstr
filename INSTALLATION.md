@@ -562,7 +562,7 @@ as if it had been typed by the user.
 * Cygwin
 * WSL
 
-HSTR uses `TIOCSTI` to insert a command chosen by the user in HSTR
+HSTR uses `TIOCSTI` to **insert a command chosen by the user** in HSTR
 to shell prompt - if `TIOCSTI` is available. Otherwise shell specific
 line editors features are used.
 
