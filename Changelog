@@ -1,8 +1,10 @@
-2026-01-24  Martin Dvorak  <martin.dvorak@mindforger.com>
+2026-01-28  Martin Dvorak  <martin.dvorak@mindforger.com>
 
   * Released v3.2.0 - Minor release bringing:
-    - STDIN handling
     - Configuration for TIOCSTI enforcement
+    - Added SIGQUIT handling to cleanup terminal state on quit
+    - Fixed buffer overflow (window resize) and missing Bash autocomplete configuration
+    - Updated changelog layout
 
 2023-04-18  Martin Dvorak  <martin.dvorak@mindforger.com>
 

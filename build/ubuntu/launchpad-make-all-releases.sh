@@ -163,9 +163,9 @@ then
     exit 1
 fi
 
-export ARG_BAZAAR_MSG="Release 3.1"
-export ARG_MAJOR_VERSION=3.1.
-export ARG_MINOR_VERSION=8 # minor version is incremented for every Ubuntu version
+export ARG_BAZAAR_MSG="Release 3.2"
+export ARG_MAJOR_VERSION=3.2.
+export ARG_MINOR_VERSION=1 # minor version is incremented for every Ubuntu version
 
 # https://wiki.ubuntu.com/Releases
 # obsolete:
