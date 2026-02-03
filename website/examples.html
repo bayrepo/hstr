@@ -151,6 +151,7 @@
             width: 100%;
             max-width: 800px;
             margin: 2rem auto;
+            padding: 10px;
             display: block;
             border-radius: 0.5rem;
             border: 2px solid rgba(0, 255, 0, 0.3);
@@ -162,6 +163,35 @@
             padding: 1rem 1.5rem;
             margin: 1.5rem 0;
             border-radius: 0.25rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
+            text-align: center;
+        }
+
+        .footer-content {
+            color: #94a3b8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
         }
 
         @media (max-width: 768px) {
@@ -196,7 +226,7 @@
 
     <div class="container">
         <div class="examples-section">
-            
+
             <div class="example-card">
                 <h2>Visual Demo</h2>
                 <p>Watch HSTR in action - see how easy it is to search and navigate your command history:</p>
@@ -209,10 +239,10 @@
             <div class="example-card">
                 <h2>Finding Docker Commands</h2>
                 <p>If you work with Docker, you know how complex commands can get. HSTR makes it easy to find and reuse them.</p>
-                
+
                 <h3>Scenario</h3>
                 <p>You need to find that Docker run command you used last week for your development environment.</p>
-                
+
                 <h3>Solution</h3>
                 <pre><code># Press Ctrl-r and type: docker run
 # HSTR will show all your docker run commands:
@@ -232,10 +262,10 @@ docker run --name redis -d -p 6379:6379 redis # REDIS
             <div class="example-card">
                 <h2>SSH Tunnel Management</h2>
                 <p>SSH tunnels are powerful but the commands are hard to remember.</p>
-                
+
                 <h3>Problem</h3>
                 <p>You have several SSH tunnels to different servers but can never remember the exact ports and parameters.</p>
-                
+
                 <h3>HSTR Solution</h3>
                 <pre><code># Tag your SSH tunnels for easy finding:
 ssh -L 8080:localhost:3000 user@dev-server.com # SSH-DEV
@@ -249,10 +279,10 @@ ssh -L 9200:localhost:9200 user@elastic.com # SSH-ELASTIC
             <div class="example-card">
                 <h2>Git Command Archaeology</h2>
                 <p>Find that perfect git command you used months ago.</p>
-                
+
                 <h3>Use Case</h3>
                 <p>You need to find a specific git log format you created, or a complex git rebase command.</p>
-                
+
                 <h3>With HSTR</h3>
                 <pre><code># Press Ctrl-r and search: git log
 
@@ -270,7 +300,7 @@ git log --author="yourname" --grep="bug fix"</code></pre>
             <div class="example-card">
                 <h2>Database Query Templates</h2>
                 <p>Reuse your complex database queries without maintaining a separate file.</p>
-                
+
                 <h3>Workflow</h3>
                 <pre><code># Run your queries and tag them:
 psql -h localhost -U postgres -d mydb -c "SELECT * FROM users WHERE created_at > NOW() - INTERVAL '7 days'" # RECENT-USERS
@@ -283,7 +313,7 @@ mysql -u root -p mydb -e "SELECT table_name, table_rows FROM information_schema.
             <div class="example-card">
                 <h2>Network Debugging Commands</h2>
                 <p>Network troubleshooting involves many specialized commands.</p>
-                
+
                 <h3>Common Network Commands</h3>
                 <pre><code># Check network connections
 netstat -tuln | grep LISTEN
@@ -303,7 +333,7 @@ traceroute example.com
             <div class="example-card">
                 <h2>System Administration Tasks</h2>
                 <p>System admin commands are often too complex to remember but too important to forget.</p>
-                
+
                 <h3>Examples</h3>
                 <pre><code># Find large files
 find / -type f -size +100M -exec ls -lh {} \; 2>/dev/null # LARGE-FILES
@@ -325,7 +355,7 @@ lsof -p $(pgrep -f "process-name") # OPEN-FILES</code></pre>
             <div class="example-card">
                 <h2>Build & Deploy Commands</h2>
                 <p>Complex build pipelines become simple with HSTR.</p>
-                
+
                 <h3>CI/CD Workflow</h3>
                 <pre><code># Build commands with different options
 npm run build -- --production --verbose # BUILD-PROD
@@ -342,7 +372,7 @@ npm run test:e2e -- --headed # TEST-E2E
             <div class="example-card">
                 <h2>Data Processing Pipelines</h2>
                 <p>Complex data transformations are easy to retrieve with HSTR.</p>
-                
+
                 <h3>Example Pipeline</h3>
                 <pre><code># CSV processing
 cat data.csv | cut -d',' -f1,3 | sort | uniq -c # CSV-UNIQUE
@@ -358,7 +388,7 @@ grep ERROR app.log | awk '{print $1, $2, $NF}' | sort | uniq -c | sort -rn # ERR
 
             <div class="example-card">
                 <h2>Productivity Tips</h2>
-                
+
                 <h3>1. Create a Personal Command Library</h3>
                 <p>Use favorites to build your own command library:</p>
                 <pre><code># Add frequently used commands to favorites (Ctrl-f)
@@ -392,14 +422,24 @@ grep ERROR app.log | awk '{print $1, $2, $NF}' | sort | uniq -c | sort -rn # ERR
         </div>
     </div>
 
-    <footer style="padding: 3rem 0; border-top: 1px solid rgba(0, 255, 0, 0.2); text-align: center; margin-top: 4rem;">
+    <footer>
         <div class="container">
-            <p style="color: #cbd5e1;">HSTR - Bash and Zsh Shell History Suggest Box</p>
-            <p style="margin-top: 1rem; color: #008800;">
-                <a href="index.html" style="color: var(--primary);">Home</a> • 
-                <a href="documentation.html" style="color: var(--primary);">Documentation</a> • 
-                <a href="https://github.com/dvorka/hstr" style="color: var(--primary);">GitHub</a>
-            </p>
+            <div class="footer-content">
+                <p>HSTR - Bash and Zsh Shell History Suggest Box</p>
+                <div class="footer-links">
+                    <a href="https://github.com/dvorka/hstr">GitHub</a>
+                    <a href="https://github.com/dvorka/hstr/issues">Issues</a>
+                    <a href="https://github.com/dvorka/hstr/releases">Releases</a>
+                    <a href="documentation.html">Documentation</a>
+                    <a href="examples.html">Examples</a>
+                    <a href="contributing.html">Contributing</a>
+                    <a href="https://pkgs.org/search/?q=hstr">Packages</a>
+                    <a href="https://repology.org/project/hstr/versions">Package Status</a>
+                </div>
+                <p style="margin-top: 1.5rem; color: #008800;">
+                    Created with passion for <a href="https://github.com/dvorka" style="color: var(--primary);">my</a> personal pleasure.<br/>
+                </p>
+            </div>
         </div>
     </footer>
 </body>

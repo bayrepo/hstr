@@ -207,6 +207,35 @@
             margin: 0;
         }
 
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
+            text-align: center;
+        }
+
+        .footer-content {
+            color: #94a3b8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
         @media (max-width: 768px) {
             .docs-content {
                 grid-template-columns: 1fr;
@@ -258,7 +287,7 @@
 
             <main class="main-content">
                 <h2 id="installation">Installation</h2>
-                
+
                 <h3>Ubuntu</h3>
                 <p>HSTR is included in Ubuntu 21.10 and newer releases:</p>
                 <pre><code>sudo apt install hstr</code></pre>
@@ -294,7 +323,7 @@ cd ../..
 ./configure && make && sudo make install</code></pre>
 
                 <h2 id="configuration">Configuration</h2>
-                
+
                 <p>Configure HSTR automatically by running:</p>
                 <pre><code># For Bash
 hstr --show-bash-configuration >> ~/.bashrc
@@ -454,7 +483,7 @@ setopt HIST_IGNORE_SPACE</code></pre>
 
                 <h3>Commands Not Inserted to Terminal</h3>
                 <p>This is a common issue with Linux kernel >= 6.2.0, WSL, and Cygwin due to TIOCSTI restrictions.</p>
-                
+
                 <div class="note">
                     <p><strong>Solution:</strong> Make sure to properly configure HSTR binding as shown in the configuration section. The binding ensures commands are inserted correctly.</p>
                 </div>
@@ -485,14 +514,24 @@ echo $PATH</code></pre>
         </div>
     </div>
 
-    <footer style="padding: 3rem 0; border-top: 1px solid rgba(0, 255, 0, 0.2); text-align: center; margin-top: 4rem;">
+    <footer>
         <div class="container">
-            <p style="color: #cbd5e1;">HSTR - Bash and Zsh Shell History Suggest Box</p>
-            <p style="margin-top: 1rem; color: #008800;">
-                <a href="https://github.com/dvorka/hstr" style="color: var(--primary);">GitHub</a> • 
-                <a href="https://github.com/dvorka/hstr/issues" style="color: var(--primary);">Issues</a> • 
-                <a href="https://github.com/dvorka/hstr/releases" style="color: var(--primary);">Releases</a>
-            </p>
+            <div class="footer-content">
+                <p>HSTR - Bash and Zsh Shell History Suggest Box</p>
+                <div class="footer-links">
+                    <a href="https://github.com/dvorka/hstr">GitHub</a>
+                    <a href="https://github.com/dvorka/hstr/issues">Issues</a>
+                    <a href="https://github.com/dvorka/hstr/releases">Releases</a>
+                    <a href="documentation.html">Documentation</a>
+                    <a href="examples.html">Examples</a>
+                    <a href="contributing.html">Contributing</a>
+                    <a href="https://pkgs.org/search/?q=hstr">Packages</a>
+                    <a href="https://repology.org/project/hstr/versions">Package Status</a>
+                </div>
+                <p style="margin-top: 1.5rem; color: #008800;">
+                    Created with passion for <a href="https://github.com/dvorka" style="color: var(--primary);">my</a> personal pleasure.<br/>
+                </p>
+            </div>
         </div>
     </footer>
 </body>
