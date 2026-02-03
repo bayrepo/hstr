@@ -31,7 +31,7 @@ or **bookmark** your favorite commands.
 
 <table><tr><td>
   <a href="https://repology.org/project/hstr/versions">
-    <img src="https://repology.org/badge/vertical-allrepos/hstr.svg?columns=3" alt="Packaging status" align="left">
+    <img src="https://repology.org/badge/vertical-allrepos/hstr.svg?columns=4" alt="Packaging status" align="left">
   </a>
 </td></tr></table>
 
