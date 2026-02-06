@@ -62,10 +62,13 @@ clean: ## clean build artifacts
 # BUILD
 #
 
-build-dev: clean ## clean, configure, and build HSTR
+../src/hstr:
 	cd ./tarball && ./tarball-automake.sh && cd ../.. && ./configure && make all
 
-build: build-dev ## clean, configure, and build HSTR
+build-dev: clean ../src/hstr ## clean, configure, and build HSTR
+	@echo "HSTR $(HSTR_VERSION) built for development"
+
+build: ../src/hstr ## clean, configure, and build HSTR
 	strip ../src/hstr
 
 #
@@ -73,11 +76,14 @@ build: build-dev ## clean, configure, and build HSTR
 #
 
 .PHONY: run-dev
-run-dev: ## run HSTR for development
-	cd .. && make clean all && cd build && ../src/hstr
+run-dev: build-dev ## run HSTR for development
+	../src/hstr
+
+run: ../src/hstr ## run HSTR
+	../src/hstr
 
 run-web: ## run HSTR web preview
-	cd ../web && python3 -m http.server 8000 && cd ..
+	cd ../web && python3 -m http.server 8000
 
 #
 # TEST
