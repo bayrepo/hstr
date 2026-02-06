@@ -296,19 +296,21 @@ checkDependencies
 
 export ARG_BAZAAR_MSG="Release 3.2"
 export ARG_MAJOR_VERSION=3.2.
-export ARG_MINOR_VERSION=1 # minor version is incremented for every Ubuntu version
+export ARG_MINOR_VERSION=10 # minor version is incremented for every Ubuntu version
 
 # https://en.wikipedia.org/wiki/Ubuntu_version_history
 # https://wiki.ubuntu.com/Releases
 # obsolete:
-#   precise quantal saucy precise utopic vivid wily yakkety xenial artful cosmic disco eoan groovy hirsute impish oracular
+#   precise quantal saucy precise utopic vivid wily yakkety xenial artful cosmic disco eoan groovy hirsute impish oracular plucky
 # missed:
 #   oracular
 # current :
-#   trusty xenial bionic focal jammy noble . plucky questing resolute
+#   trusty xenial bionic focal jammy noble . questing
+# future:
+#   resolute
 # command :
-#   trusty xenial bionic focal jammy noble plucky questing resolute
-for UBUNTU_VERSION in noble
+#   trusty xenial bionic focal jammy noble questing
+for UBUNTU_VERSION in trusty xenial bionic focal jammy plucky questing
 do
     echo "Releasing HSTR for Ubuntu version: ${UBUNTU_VERSION}"
     releaseForParticularUbuntuVersion ${UBUNTU_VERSION} ${ARG_MAJOR_VERSION}${ARG_MINOR_VERSION} "${ARG_BAZAAR_MSG}"

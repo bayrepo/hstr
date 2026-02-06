@@ -30,7 +30,12 @@ export GH_DISTRO_DIR=${GH_RELEASE_DIR}/release-${NOW}
 function makeTarballRelease() {
     cp -vrf ${GH_SRC_DIR} .
     mv `basename ${GH_SRC_DIR}` hstr
-    cd hstr && rm -vrf debian doc test hstr && cd build/tarball && ./tarball-automake.sh --purge
+
+    cd hstr && \
+    rm -vrf debian doc test hstr .git .vscode .github .*~ web && \
+    cd build/tarball && \
+    ./tarball-automake.sh --purge
+
     if [ ${?} -ne 0 ]
     then
         echo "ERROR: automake prepare phase failed"
@@ -39,6 +44,7 @@ function makeTarballRelease() {
     cd ../../..
     tar zcfv hstr-${HSTR_VERSION}-tarball.tgz hstr
     cd hstr && ./configure && make && cd src
+    strip hstr
     tar zcfv ../../hstr-${HSTR_VERSION}-bin-64b.tgz hstr
 }
 
