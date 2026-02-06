@@ -6,7 +6,7 @@
 [![All releases downloads](https://img.shields.io/github/downloads/dvorka/hstr/total.svg)](https://github.com/dvorka/hstr/releases)
 [![License](https://img.shields.io/github/license/dvorka/hstr?color=%23fe0000)](https://github.com/dvorka/hstr/blob/master/LICENSE)
 
-Easily view, navigate and search your **command history** with shell history suggest box for 
+Easily view, navigate and search your **command history** with shell history TUI suggest box for
 [bash](https://www.gnu.org/software/bash/) and [zsh](CONFIGURATION.md#zsh-history-settings).
 
 [![Shell History Suggest Box](doc/hstr-v2.gif "Shell History Suggest Box @ YouTube")](http://www.youtube.com/watch?v=sPF29NyXe2U)
@@ -26,6 +26,14 @@ commands that are obsolete or contain a piece of sensitive information)
 or **bookmark** your favorite commands.
 
 <!-- Check [video](http://www.youtube.com/watch?v=sPF29NyXe2U) tutorial. -->
+
+## Packages
+
+<table><tr><td>
+  <a href="https://repology.org/project/hstr/versions">
+    <img src="https://repology.org/badge/vertical-allrepos/hstr.svg?columns=4" alt="Packaging status" align="left">
+  </a>
+</td></tr></table>
 
 ## Installation
 
@@ -84,9 +92,29 @@ hstr --show-zsh-configuration >> ~/.zshrc
 
 For detailed HSTR configuration documentation please refer to [Configuration](CONFIGURATION.md).
 
+## Tips
+Troubleshooting:
+
+* [Commands chosen in HSTR are not inserted to terminal](INSTALLATION.md#hstr-2x-to-3x-ioctl--tiocsti)
+
+Tips and tricks:
+
+* [How to hide commands from your history](./TIPS.md)
+* [How to use command tags for fast lookup](./TIPS.md)
+* [How to curate your favorite commands](./TIPS.md)
+
+
 ## In the News
 
-Read about HSTR in [LinuxMagazine](http://www.linux-magazine.com/Issues/2014/164/Bash-History-on-Steroids), [UbuntuGeek](http://www.ubuntugeek.com/tag/hstr-bash-history), [DebianAdmin](http://www.debianadmin.com/hstr-easily-view-navigate-search-and-use-your-command-history-with-shell-history.html), [Tuxdiary](http://tuxdiary.com/2015/02/17/hstr/), [Softpedia](http://linux.softpedia.com/get/Terminals/BASH-Command-History-Completion-103155.shtml) and [OSTechNix](https://www.ostechnix.com/hstr-easily-view-navigate-search-manage-commandline-history/).
+Read about HSTR in:
+
+* [LinuxMagazine](http://www.linux-magazine.com/Issues/2014/164/Bash-History-on-Steroids)
+* [UbuntuGeek](http://www.ubuntugeek.com/tag/hstr-bash-history)
+* [DebianAdmin](http://www.debianadmin.com/hstr-easily-view-navigate-search-and-use-your-command-history-with-shell-history.html)
+* [Tuxdiary](http://tuxdiary.com/2015/02/17/hstr/)
+* [Softpedia](http://linux.softpedia.com/get/Terminals/BASH-Command-History-Completion-103155.shtml)
+* [OSTechNix](https://www.ostechnix.com/hstr-easily-view-navigate-search-manage-commandline-history/)
+
 
 ## Documentation
 
@@ -96,7 +124,7 @@ Check man page:
 man hstr
 ```
 
-User videos: [Zack](https://www.youtube.com/watch?v=Qd75pIeQkH8), [Dvorka](https://www.youtube.com/watch?v=sPF29NyXe2U) and [Yu-Jie Lin](https://www.youtube.com/watch?v=Qx5n_5B5xUw).
+User videos: [Zack](https://www.youtube.com/watch?v=Qd75pIeQkH8), [Dvorka](https://www.youtube.com/watch?v=sPF29NyXe2U), [Yayuuu](https://www.reddit.com/r/commandline/comments/1lo5up5/hstr_tiny_bash_script_that_helps_you_browse_and/), and [Yu-Jie Lin](https://www.youtube.com/watch?v=Qx5n_5B5xUw).
 
 ## Bugs
 

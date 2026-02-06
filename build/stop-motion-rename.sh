@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2014-2025 Martin Dvorak <martin.dvorak@mindforger.com>
+# Copyright (C) 2014-2026 Martin Dvorak <martin.dvorak@mindforger.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export FFF=`ls *.png | while read F
-do
-    echo "${F}"
-done`
+# Script which creates raw screenshots to reasonable names to simplify animated gif edits
 
-# delay: 100 > 75
-export CCC="convert -loop 0 -delay 75 ${FFF} hstr-v2.gif"
-
-#echo ${CCC};
-${CCC}
+export C=1000
+ls *.png | while read F; do C=`expr $C + 1`; cp -vf "$F" "${C}.png"; done
 
 # eof

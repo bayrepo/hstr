@@ -1,7 +1,7 @@
 /*
  hstr.h   header file for HSTR shell history completion utility
 
- Copyright (C) 2014-2025 Martin Dvorak <martin.dvorak@mindforger.com>
+ Copyright (C) 2014-2026 Martin Dvorak <martin.dvorak@mindforger.com>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,8 +19,11 @@
 #ifndef HSTR_H
 #define HSTR_H
 
+#include <errno.h>
 #include <getopt.h>
 #include <locale.h>
+#include <sys/select.h>
+#include <unistd.h>
 #ifdef __APPLE__
   #include <curses.h>
 #elif defined(__FreeBSD__)

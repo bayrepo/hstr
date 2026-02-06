@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2014-2025 Martin Dvorak <martin.dvorak@mindforger.com>
+# Copyright (C) 2014-2026 Martin Dvorak <martin.dvorak@mindforger.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -147,8 +147,8 @@ then
   exit 1
 fi
 
-export ARG_BAZAAR_MSG="HSTR 3.1.0"
-export ARG_VERSION="3.1.0"
+export ARG_BAZAAR_MSG="HSTR 3.2.0"
+export ARG_VERSION="3.2.0"
 
 # Debian releases: https://www.debian.org/releases/
 #   6/7/8/9/10: squeeze wheezy jessie stretch buster

@@ -1,7 +1,7 @@
 /*
  hstr.c     HSTR shell history completion utility
 
- Copyright (C) 2014-2025 Martin Dvorak <martin.dvorak@mindforger.com>
+ Copyright (C) 2014-2026 Martin Dvorak <martin.dvorak@mindforger.com>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 
 #define SELECTION_CURSOR_IN_PROMPT -1
 #define SELECTION_PREFIX_MAX_LNG 512
-#define CMDLINE_LNG 2048
+#define CMDLINE_LNG 8192
 #define HOSTNAME_BUFFER 128
 
 #define PG_JUMP_SIZE 10
@@ -65,9 +65,11 @@
 #define HSTR_COLOR_DELETE  4
 #define HSTR_COLOR_MATCH   5
 
-#define HSTR_ENV_VAR_CONFIG      "HSTR_CONFIG"
-#define HSTR_ENV_VAR_PROMPT      "HSTR_PROMPT"
-#define HSTR_ENV_VAR_IS_SUBSHELL "HSTR_IS_SUBSHELL"
+#define HSTR_ENV_VAR_CONFIG                "HSTR_CONFIG"
+#define HSTR_ENV_VAR_PROMPT                "HSTR_PROMPT"
+#define HSTR_ENV_VAR_IS_SUBSHELL           "HSTR_IS_SUBSHELL"
+#define HSTR_ENV_VAR_TIOCSTI               "HSTR_TIOCSTI"
+#define HSTR_ENV_VAR_SUPPRESS_WARNING      "HSTR_SUPPRESS_TIOCSTI_WARNING"
 
 #define HSTR_CONFIG_THEME_MONOCHROMATIC     "monochromatic"
 #define HSTR_CONFIG_THEME_HICOLOR           "hicolor"
@@ -97,6 +99,8 @@
 #define HSTR_DEBUG_LEVEL_NONE  0
 #define HSTR_DEBUG_LEVEL_WARN  1
 #define HSTR_DEBUG_LEVEL_DEBUG 2
+
+#define HSTR_EXIT_CONFIG_REQUIRED 2
 
 #define HSTR_VIEW_RANKING      0
 #define HSTR_VIEW_HISTORY      1
@@ -135,9 +139,9 @@
 #define LOGSELECTION(Y,SCREEN,MODEL)
 #endif
 
-// major.minor.revision
+// semantic versioning: major.minor.revision
 static const char* VERSION_STRING=
-        "hstr version \"3.1.0\" (2023-04-18T08:50:00)"
+        "hstr version \"3.2.0\" (2026-02-06T07:42:00)"
         "\n";
 
 static const char* HSTR_VIEW_LABELS[]={
@@ -199,6 +203,7 @@ static const char* HELP_STRING=
         "\n  --show-zsh-configuration  -Z ... show zsh configuration to be added to ~/.zshrc"
         "\n  --show-blacklist          -b ... show commands to skip on history indexation"
         "\n  --is-tiocsti              -t ... detect whether TIOCSTI is supported and print y or n"
+        // IMPROVE: insert in terminal will work w/ kernels >= 6.2.0 - hide if TIOCSTI is not supported
         "\n  --insert-in-terminal=[c]  -i ... insert command c in terminal prompt and exit"
         "\n  --version                 -V ... show version details"
         "\n  --help                    -h ... help"
@@ -273,6 +278,83 @@ typedef struct {
 
 static Hstr* hstr;
 
+bool show_tiocsti_configuration_warning(void)
+{
+    // If stdin or stderr is not a TTY, don't prompt interactively to avoid invisible hangs
+    if (!isatty(STDIN_FILENO) || !isatty(STDERR_FILENO)) {
+        return false;
+    }
+
+    bool is_zsh = is_zsh_parent_shell();
+    const char *shell_name = is_zsh ? "zsh" : "bash";
+    const char *config_cmd = is_zsh ?
+        "hstr --show-zsh-configuration >> ~/.zshrc && source ~/.zshrc" :
+        "hstr --show-bash-configuration >> ~/.bashrc && source ~/.bashrc";
+
+    fprintf(stderr,
+        "\n"
+        "=== HSTR CONFIGURATION REQUIRED ===\n"
+        "\n"
+        "HSTR cannot inject commands into your shell because:\n"
+        "  - Your Linux kernel >= 6.2.0 has TIOCSTI disabled\n"
+        "  - Your %s config is missing required HSTR function\n"
+        "To fix this, run:\n"
+        "\n"
+        "  %s\n"
+        "\n"
+        "Choose an option:\n"
+        "  [E] exit and configure HSTR (recommended)\n"
+        "  [c] continue anyway\n"
+        "\n"
+        "To suppress this warning: export HSTR_SUPPRESS_TIOCSTI_WARNING=1\n"
+        "\n"
+        "Your choice [E/c]: ",
+        shell_name, config_cmd
+    );
+    fflush(stderr);
+
+    // read user input with timeout (retries in case of terminal resize signal EINTR)
+    char choice = '\0';
+    fd_set readfds;
+    struct timeval timeout;
+    int ret;
+    int retries = 0;
+    const int max_retries = 10;
+    do {
+        FD_ZERO(&readfds);
+        FD_SET(STDIN_FILENO, &readfds);
+
+        timeout.tv_sec = 30;
+        timeout.tv_usec = 0;
+
+        ret = select(STDIN_FILENO + 1, &readfds, NULL, NULL, &timeout);
+        if (ret == -1 && errno == EINTR) {
+            retries++;
+        }
+    } while (ret == -1 && errno == EINTR && retries < max_retries);
+
+    if (ret > 0) {
+        char input[10];
+        if (fgets(input, sizeof(input), stdin) != NULL) {
+            choice = tolower((unsigned char)input[0]);
+        }
+    } else if (ret == 0) {
+        fprintf(stderr, "\n\nTimeout - exiting!\n");
+        choice = 'e';
+    } else {
+        choice = 'e';
+    }
+
+    if (choice == 'c') {
+        fprintf(stderr, "\nContinuing in 'print commands only' mode...\n\n");
+        return true;
+    } else {
+        // exiting to let user configure HSTR
+        fprintf(stderr, "\n");
+        return false;
+    }
+}
+
 void hstr_init(void)
 {
     hstr->history=NULL;
@@ -337,7 +419,7 @@ void hstr_exit(int status)
 
 void signal_callback_handler_ctrl_c(int signum)
 {
-    if(signum==SIGINT) {
+    if(signum==SIGINT || signum==SIGQUIT) {
         history_mgmt_flush();
         hstr_curses_stop(false);
         hstr_exit(signum);
@@ -403,7 +485,7 @@ void print_zsh_install_code(void)
 #endif
 
         "\n    zle -I"
-        "\n    { HSTR_OUT=\"$( { </dev/tty hstr ${BUFFER}; } 2>&1 1>&3 3>&- )\"; } 3>&1;"
+        "\n    { HSTR_OUT=\"$( { </dev/tty hstr -- ${BUFFER}; } 2>&1 1>&3 3>&- )\"; } 3>&1;"
         "\n    BUFFER=\"${HSTR_OUT}\""
         "\n    CURSOR=${#BUFFER}"
         "\n    zle redisplay"
@@ -1254,6 +1336,7 @@ void hide_notification(void)
 void loop_to_select(void)
 {
     signal(SIGINT, signal_callback_handler_ctrl_c);
+    signal(SIGQUIT, signal_callback_handler_ctrl_c);
 
     bool isSubshellHint=FALSE;
     char* isSubshellHintText = getenv(HSTR_ENV_VAR_IS_SUBSHELL);
@@ -1657,17 +1740,19 @@ void hstr_assemble_cmdline_pattern(int argc, char* argv[], int startIndex)
 {
     if(argc>0) {
         int i;
+        size_t cmdlineLen = strlen(hstr->cmdline);
         for(i=startIndex; i<argc; i++) {
-            if((strlen(hstr->cmdline)+strlen(argv[i])*2)>CMDLINE_LNG) break;
-            if(strstr(argv[i], " ")) {
-                strcat(hstr->cmdline, "\"");
-            }
-            strcat(hstr->cmdline, argv[i]);
-            if(strstr(argv[i], " ")) {
-                strcat(hstr->cmdline, "\"");
-            }
-            if((i+1<argc)) {
-                strcat(hstr->cmdline, " ");
+            size_t argLen = strlen(argv[i]);
+            // account for argv[i] + potential space + null terminator
+            size_t spaceNeeded = (i+1<argc) ? 1 : 0;
+            if(cmdlineLen + argLen + spaceNeeded + 1 > CMDLINE_LNG) break;
+
+            strcpy(hstr->cmdline + cmdlineLen, argv[i]);
+            cmdlineLen += argLen;
+
+            if(i+1<argc) {
+                hstr->cmdline[cmdlineLen++] = ' ';
+                hstr->cmdline[cmdlineLen] = '\0';
             }
         }
     }
@@ -1773,6 +1858,47 @@ int hstr_main(int argc, char* argv[])
 #else
     is_tiocsti = is_tiocsti_supported();
 #endif
+
+    // check if configuration warning is needed
+    if (!is_tiocsti) {
+        char *tiocsti_env = getenv(HSTR_ENV_VAR_TIOCSTI);
+        char *suppress_warning = getenv(HSTR_ENV_VAR_SUPPRESS_WARNING);
+
+        // IF env var is not set, or is set to anything other than "n",
+        // THEN show warning unless suppression flag is set
+        if ((!tiocsti_env || strcmp(tiocsti_env, "n") != 0) && !suppress_warning) {
+            bool skip_check = false;
+            int i;
+            for (i = 1; i < argc; i++) {
+                if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-V") == 0 ||
+                    strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0 ||
+                    strcmp(argv[i], "--show-configuration") == 0 || strcmp(argv[i], "-s") == 0 ||
+                    strcmp(argv[i], "--show-bash-configuration") == 0 || strcmp(argv[i], "-B") == 0 ||
+                    strcmp(argv[i], "--show-zsh-configuration") == 0 || strcmp(argv[i], "-Z") == 0 ||
+                    strcmp(argv[i], "--is-tiocsti") == 0 || strcmp(argv[i], "-t") == 0 ||
+                    strcmp(argv[i], "--non-interactive") == 0 || strcmp(argv[i], "-n") == 0 ||
+                    strcmp(argv[i], "--kill-last-command") == 0 || strcmp(argv[i], "-k") == 0 ||
+                    strcmp(argv[i], "--show-blacklist") == 0 || strcmp(argv[i], "-b") == 0 ||
+                    strncmp(argv[i], "--insert-in-terminal", 20) == 0 || strncmp(argv[i], "-i", 2) == 0) {
+                    skip_check = true;
+                    break;
+                }
+            }
+
+            // SKIP if stdin is not a tty (running in script/pipe)
+            if (!skip_check && !isatty(STDIN_FILENO)) {
+                skip_check = true;
+            }
+
+            if (!skip_check) {
+                bool continue_anyway = show_tiocsti_configuration_warning();
+                if (!continue_anyway) {
+                    exit(HSTR_EXIT_CONFIG_REQUIRED);
+                }
+                // ELSE continue w/o ability to insert commands into terminal
+            }
+        }
+    }
 
     hstr=malloc(sizeof(Hstr));
     hstr_init();

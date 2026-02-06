@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2014-2025 Martin Dvorak <martin.dvorak@mindforger.com>
+# Copyright (C) 2014-2026 Martin Dvorak <martin.dvorak@mindforger.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Build animated .gif from PNGs
+export FFF=`ls *.png | while read F
+do
+    echo "${F}"
+done`
 
-convert -loop 0 -delay 100 in1.png in2.png out.gif
+# delay: 100 > 75
+export CCC="convert -loop 0 -delay 75 ${FFF} hstr-stop-motion.gif"
+
+#echo ${CCC};
+${CCC}
 
 # eof
