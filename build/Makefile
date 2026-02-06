@@ -76,6 +76,9 @@ build: build-dev ## clean, configure, and build HSTR
 run-dev: ## run HSTR for development
 	cd .. && make clean all && cd build && ../src/hstr
 
+run-web: ## run HSTR web preview
+	cd ../web && python3 -m http.server 8000 && cd ..
+
 #
 # TEST
 #
