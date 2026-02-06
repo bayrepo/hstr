@@ -21,10 +21,10 @@ export OPT_ALL_SCENARIOS=true
 # both valid and INVALID history file to be tested
 #export HISTFILE=
 #export HISTFILE="/tmp/invalid-history-file-01"
-#export HISTFILE="~/.bash_history"
-export HISTFILE="~/.zsh_history"
-#export HISTFILE="~/.zhistory"
-#export HISTFILE="~/.zshrc"
+#export HISTFILE="${HOME}/.bash_history"
+export HISTFILE="${HOME}/.zsh_history"
+#export HISTFILE="${HOME}/.zhistory"
+#export HISTFILE="${HOME}/.zshrc"
 
 # build
 cd .. && qmake CONFIG+=hstrdebug hstr.pro && make clean && make -j 8
