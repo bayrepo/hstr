@@ -55,4 +55,4 @@ This document provides instructions to the copilot AI assistants and agents.
 
 ## Documentation instructions
 
-- ALWAY document new features in the man page located in the `man/` directory.
+- ALWAYS document new features in the man page located in the `man/` directory.
