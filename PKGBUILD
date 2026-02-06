@@ -16,8 +16,8 @@ arch=('x86_64'
 url="https://github.com/dvorka/hstr"
 license=('Apache')
 makedepends=('autoconf' 'automake' 'ncurses' 'readline')
-source=(${pkgname}-${pkgver}.tar.gz::https://github.com/dvorka/${pkgname}/archive/${pkgver}.tar.gz)
-sha256sums=('886531ca9d8d1a5a93a3db96e9fc64154a03f6de428c74c722b41057bceca266')
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/dvorka/${pkgname}/archive/v${pkgver}.tar.gz)
+sha256sums=('bceab1cb3c3b636d9ff4dfbaf8b035530e76a36d948767ed1735c4e79d7473eb')
 
 prepare() {
     cd "${pkgname}-${pkgver}"
