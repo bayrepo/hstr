@@ -247,8 +247,16 @@ function releaseForParticularUbuntuVersion() {
     export PBUILDFOLDER=/tmp/hstr-tmp
     rm -rvf ${PBUILDFOLDER}
     mkdir -p ${PBUILDFOLDER}
-    if [ -d ~/.cache/pbuilder ]; then
-        cp -rvf ~/.cache/pbuilder/*-${UBUNTUVERSION}-*.tgz ${PBUILDFOLDER}/ 2>/dev/null || true
+    # copy pbuilder base tarball if it exists in ~/pbuilder/
+    if [ -f ~/pbuilder/${UBUNTUVERSION}-base.tgz ]; then
+        cp -v ~/pbuilder/${UBUNTUVERSION}-base.tgz ${PBUILDFOLDER}/
+    else
+        echo "ERROR: pbuilder base tarball not found: ~/pbuilder/${UBUNTUVERSION}-base.tgz"
+        echo "Please create it first by running:"
+        echo "  pbuilder-dist ${UBUNTUVERSION} create"
+        echo "  mkdir -p ~/pbuilder"
+        echo "  sudo cp /var/cache/pbuilder/${UBUNTUVERSION}-base.tgz ~/pbuilder/"
+        # NON critital error: exit 1
     fi
     # END
     pbuilder-dist ${UBUNTUVERSION} build ${HSTRRELEASE}.dsc
