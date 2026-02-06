@@ -24,6 +24,13 @@
 HSTR_VERSION := $(shell grep 'hstr version' ../src/hstr.c | sed 's/.*hstr version \\"\([^\\]*\)\\".*/\1/')
 
 #
+# CMD
+#
+
+DIFF := colordiff -u
+
+
+#
 # HELP
 #
 
@@ -108,3 +115,14 @@ install-personal: build ## install HSTR for personal user
 	@cp -vf ../src/hstr $(HOME)/bin
 	@echo "HSTR $(HSTR_VERSION) installed to $(HOME)/bin"
 	hstr --version
+
+#
+# package
+#
+
+.PHONY: .
+releng-ubuntu: ## release launchpad package for Ubuntu
+	@echo "= Diff ============================"
+	$(DIFF) ./ubuntu/launchpad-make-all-releases.sh ~/p/hstr/launchpad/launchpad-make-all-releases.sh || true
+	@echo "= Script ============================"
+	cd ~/p/hstr/launchpad && ./launchpad-make-all-releases.sh
